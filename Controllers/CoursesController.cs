@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -59,10 +60,23 @@ namespace Bai4_lab1.Controllers
             foreach(Course c in upcoming)
             {
                 ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(c.LecturerId);
-                c.Category.Name = user.Name;
+                c.LecturerId = user.Name;
             }
             Console.WriteLine(upcoming);
             return View(upcoming);
+        }
+
+        public ActionResult Mine()
+        {
+            ApplicationUser currentUser = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>()
+                .FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            BigSchoolContext context = new BigSchoolContext();
+            var courses = context.Courses.Where(c => c.LecturerId == currentUser.Id && c.DateTime > DateTime.Now).ToList();
+            foreach( Course i in courses)
+            {
+                i.LecturerId = currentUser.Name;
+            }
+            return View(courses);
         }
     }
 }

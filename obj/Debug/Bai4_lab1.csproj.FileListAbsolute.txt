@@ -106,3 +106,9 @@ R:\Lab thực hành web\Bai4_lab1\obj\Debug\Bai4_lab1.csproj.CoreCompileInputs.c
 R:\Lab thực hành web\Bai4_lab1\obj\Debug\Bai4_lab1.csproj.CopyComplete
 R:\Lab thực hành web\Bai4_lab1\obj\Debug\Bai4_lab1.dll
 R:\Lab thực hành web\Bai4_lab1\obj\Debug\Bai4_lab1.pdb
+R:\Lab thực hành web\Bai4_lab1\bin\System.Net.Http.Formatting.dll
+R:\Lab thực hành web\Bai4_lab1\bin\System.Web.Http.dll
+R:\Lab thực hành web\Bai4_lab1\bin\System.Web.Http.WebHost.dll
+R:\Lab thực hành web\Bai4_lab1\bin\System.Net.Http.Formatting.xml
+R:\Lab thực hành web\Bai4_lab1\bin\System.Web.Http.xml
+R:\Lab thực hành web\Bai4_lab1\bin\System.Web.Http.WebHost.xml

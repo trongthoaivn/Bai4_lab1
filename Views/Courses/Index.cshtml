@@ -1,18 +1,81 @@
-﻿
+﻿@model IEnumerable<Bai4_lab1.Models.Course>
+
 @{
     ViewBag.Title = "Index";
 }
 
-<div class="row">
+<h2>Index</h2>
 
-    <ul>
-        @foreach (var c in Model)
-        {
-            <li>
-                @c.DateTime.ToString("dd/MM/yyyy HH:mm") - @c.Category.Name
-            </li>
-        }
-    </ul>
-    @Html.ActionLink("Create Courses", "Create")
-</div>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Time
+        </th>
+        <th>
+           Sourse
+        </th>
+        <th>
+            Place
+        </th>
 
+        <th>
+            Lecturer
+        </th>
+        <th>
+            Going
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @item.DateTime
+    </td>
+    <td>
+        @item.Category.Name
+    </td>
+    <td>
+       @item.Place
+    </td>
+    <td>
+        @item.LecturerId
+    </td>
+    <td>
+        <button id="@item.Id" class="btn btn-default btn-sm js-tongle-attendance" >Going ?</button>
+    </td>
+</tr>
+}
+
+</table>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('.btn').click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { CourseId: button.attr("id") }).done(function () {
+                    button
+                        .removeClass("btn-default")
+                        .addClass("btn-info")
+                        .text("Going");
+                }).fail(function () {
+                    alert("Something failed");
+                });
+            });
+
+
+            //$('.js-toggle-follow').click(function (e) {
+            //    var button = $(e.target);
+            //    $.post("/api/followings", { FolloweeId: button.attr("data-user-id") }).done(function () {
+            //        button
+            //            .text("Following");
+            //    }).fail(function () {
+            //        alert("Something failed");
+            //    });
+            //});
+        });
+    </script>
+    }
