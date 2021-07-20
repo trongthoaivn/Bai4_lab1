@@ -180,6 +180,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\AttendancesController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -256,9 +257,11 @@
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Courses\Mine.cshtml" />
+    <Content Include="Views\Courses\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\Api\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

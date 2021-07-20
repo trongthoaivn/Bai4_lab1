@@ -12,36 +12,59 @@
 <table class="table">
     <tr>
         <th>
-           Date Time
+            Date Time
         </th>
         <th>
-           Lecturer
+            Lecturer
         </th>
         <th>
             Course
         </th>
         <th>
-           Action
+            Action
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @item.DateTime
-        </td>
-        <td>
-            @item.LecturerId
-        </td>
-        <td>
-            @item.Category.Name
-        </td>
-        <td>
-            <a href="#">Edit</a> |
-            <a id="@item.Id" href="#" class="delete">Delete</a>
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.DateTime
+            </td>
+            <td>
+                @item.LecturerId
+            </td>
+            <td>
+                @item.Category.Name
+            </td>
+            <td>
+                <a href="@Url.Action("Edit","Courses", new { id = item.Id, CategoryId = item.CategoryId })">Edit</a> |
+                <a id="@item.Id" href="#" class="delete">Delete</a>
+            </td>
+        </tr>
+    }
 
 </table>
+@section scripts{
+    <script>
+        $(function () {
+            $(".delete").click(function () {
+          
+                $.ajax({
+                    type: "GET",
+                    url: "../api/DeteleCourse",
+                    data: { 'id': $(this).attr("id") },
+                    success: function (dt) {
+                        alert("ok")
+                     //   $("body").load(@Url.Action("Mine","Courses"));
+                    },
+                    error: function (er) {
+                        alert("error")
+                    }
+                })
+            });
+
+        });
+    </script>
+}

@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -65,7 +66,7 @@ namespace Bai4_lab1.Controllers
             Console.WriteLine(upcoming);
             return View(upcoming);
         }
-
+        [Authorize]
         public ActionResult Mine()
         {
             ApplicationUser currentUser = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>()
@@ -77,6 +78,38 @@ namespace Bai4_lab1.Controllers
                 i.LecturerId = currentUser.Name;
             }
             return View(courses);
+        }
+        [Authorize]
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            BigSchoolContext context = new BigSchoolContext();
+            var course = context.Courses.Single(c => c.Id == id && c.LecturerId == userId);
+            course.ListCategory = context.Categories.ToList();
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(course);
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult Edit(Course course)
+        {
+            BigSchoolContext context = new BigSchoolContext();
+            ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            course.LecturerId = user.Id;
+            context.Courses.AddOrUpdate(course);
+            context.SaveChanges();
+
+            var upcoming = context.Courses.Where(p => p.DateTime > DateTime.Now).OrderBy(p => p.DateTime).ToList();
+            foreach (Course c in upcoming)
+            {
+                c.LecturerId = user.Name;
+            }
+            return View("Index", upcoming);
         }
     }
 }
