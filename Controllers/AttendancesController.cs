@@ -11,23 +11,41 @@ namespace Bai4_lab1.Controllers
 {
     public class AttendancesController : ApiController
     {
-        [HttpPost]
-        public IHttpActionResult Attend(Course attendanceDto)
+        [HttpGet]
+        [Route("api/Attendances")]
+        public IHttpActionResult Attendances(int id)
         {
             var userID = User.Identity.GetUserId();
             BigSchoolContext context = new BigSchoolContext();
-            if (context.Attendances.Any(p => p.Attendee == userID && p.CourseId == attendanceDto.Id))
-            {
-                return BadRequest("The attendance already exists!");
-            }
+            
             var attendance = new Attendance()
             {
-                CourseId = attendanceDto.Id,
-                Attendee = User.Identity.GetUserId()
+                CourseId = id,
+                Attendee = userID
             };
-            context.Attendances.Add(attendance);
-            context.SaveChanges();
-            return Ok();
+            try
+            {
+                if( context.Attendances.Any(a => a.Attendee== attendance.Attendee && a.CourseId == attendance.CourseId))
+                {
+                    var obj = context.Attendances.First(a => a.Attendee == attendance.Attendee && a.CourseId == attendance.CourseId);
+                    context.Attendances.Remove(obj);
+                    context.SaveChanges();
+                    return Ok("remove");
+                }
+                else
+                {
+                    context.Attendances.Add(attendance);
+                    context.SaveChanges();
+                }
+                
+                return Ok("add");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message.ToString());
+            }
+            
+            
         }
     }
 }

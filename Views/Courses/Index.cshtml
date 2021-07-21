@@ -42,9 +42,34 @@
     </td>
     <td>
         @item.LecturerId
+        @if (item.isLogin)
+        {
+            if (item.isFollowing)
+            {
+                <button id="@item.Id" class="btn btn-default btn-sm js-tongle-follow">Follow</button>
+            }
+            else
+            {
+                <button id="@item.Id" class="btn btn-success btn-sm js-tongle-follow">Following</button>
+            }
+        }
+
+
+
     </td>
     <td>
-        <button id="@item.Id" class="btn btn-default btn-sm js-tongle-attendance" >Going ?</button>
+        @if (item.isLogin)
+        {
+            if (item.isGoing)
+            {
+                <button id="@item.Id" class="btn btn-default btn-sm js-tongle-attendance">Going ?</button>
+            }
+            else
+            {
+                <button id="@item.Id" class="btn btn-success btn-sm js-tongle-attendance">Going</button>
+            }
+        }
+
     </td>
 </tr>
 }
@@ -54,28 +79,56 @@
 @section scripts{
     <script>
         $(function () {
-            $('.btn').click(function (e) {
+            $('.js-tongle-attendance').click(function (e) {
                 var button = $(e.target);
-                $.post("/api/attendances", { CourseId: button.attr("id") }).done(function () {
-                    button
-                        .removeClass("btn-default")
-                        .addClass("btn-info")
-                        .text("Going");
-                }).fail(function () {
-                    alert("Something failed");
-                });
+                $.ajax({
+                    type: "GET",
+                    url: "../api/Attendances",
+                    data: { 'id': $(this).attr("id") },
+                    success: function (dt) {
+                        if (dt == "add") {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        }else{
+                            button
+                                .removeClass("btn-info btn-success")
+                                .addClass("btn-default")
+                                .text("Going ?");
+                        }
+                    },
+                    error: function (er) {
+                        alert(er.responseText)
+                    }
+                })
             });
 
 
-            //$('.js-toggle-follow').click(function (e) {
-            //    var button = $(e.target);
-            //    $.post("/api/followings", { FolloweeId: button.attr("data-user-id") }).done(function () {
-            //        button
-            //            .text("Following");
-            //    }).fail(function () {
-            //        alert("Something failed");
-            //    });
-            //});
+            $('.js-tongle-follow').click(function (e) {
+                var button = $(e.target);
+                 $.ajax({
+                    type: "GET",
+                    url: "../api/Following",
+                    data: { 'id': $(this).attr("id") },
+                    success: function (dt) {
+                        if (dt == "add") {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Unfollow");
+                        } else {
+                            button
+                                .removeClass("btn-info btn-success")
+                                .addClass("btn-default")
+                                .text("Follow");
+                        }
+                    },
+                    error: function (er) {
+                        alert("error")
+                    }
+                })
+            });
         });
     </script>
     }

@@ -25,5 +25,9 @@ namespace Bai4_lab1.Models
         public virtual Category Category { get; set; }
 
         public List<Category> ListCategory = new List<Category>();
+
+        public bool isLogin = false;
+        public bool isFollowing = false;
+        public bool isGoing = false;
     }
 }

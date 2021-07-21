@@ -23,22 +23,15 @@ namespace Bai4_lab1.Controllers.Api
            
             try
             {
-                var Attend = schoolContext.Attendances.Single(p => p.Attendee == userId && p.CourseId == id);
-                schoolContext.Attendances.Remove(Attend);
+                //var Attend = schoolContext.Attendances.Single(p => p.Attendee == userId && p.CourseId == id);
+                //schoolContext.Attendances.Remove(Attend);
                 schoolContext.Courses.Remove(course);
                 schoolContext.SaveChanges();
-                return Json(new
-                {
-                    check = "Ok"
-                });
+                return Ok();
             }
             catch(Exception e)
             {
-                e.Message.ToString();
-                return Json(new
-                {
-                    check = "Null"
-                });
+                return BadRequest(e.Message.ToString());
             }
         }
     }

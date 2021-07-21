@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Bai4_lab1.Models.Course>
+
+@{
+    ViewBag.Title = "LectureIamGoing";
+}
+
+<h2>LectureIamGoing</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Time
+        </th>
+        <th>
+            Sourse
+        </th>
+        <th>
+            Place
+        </th>
+
+        <th>
+            Lecturer
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @item.DateTime
+    </td>
+    <td>
+        @item.Category.Name
+    </td>
+    <td>
+        @item.Place
+    </td>
+    <td>
+        @item.LecturerId
+    </td>
+
+</tr>
+}
+
+</table>
